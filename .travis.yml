@@ -3,31 +3,44 @@ language: minimal
 sudo: true
 
 env:
-  - distro: debian8 # jessie
+  # Jessie
+  - distro: debian8
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
-#  - distro: debian9 # stretch
+  # Stretch
+  - distro: debian9
+    init: /lib/systemd/systemd
+    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
 
 before_install:
+  # Pull the Docker container from Docker Hub
   - docker pull geerlingguy/docker-${distro}-ansible:latest
 
 script:
+  # Store the container ID in a temp file since we'll need it later
   - container_id=$(mktemp)
-  - docker run --detach --volume=${PWD}:/etc/ansible/roles/role_to_test:ro ${run_opts} geerlingguy/docker-${distro}-ansible:latest ${init} > ${container_id}
+  # Run the container detached, with our role mounted inside
+  - docker run --detach --volume=${PWD}:/etc/ansible/roles/htop:ro ${run_opts} geerlingguy/docker-${distro}-ansible:latest ${init} > ${container_id}
+  # Check the role's syntax
   - >
     docker exec --tty $(cat ${container_id}) env TERM=xterm
-    ansible-playbook /etc/ansible/roles/role_to_test/tests/test.yml --syntax-check
+    ansible-playbook /etc/ansible/roles/htop/tests/test.yml --syntax-check
+  # Run the role with ansible-playbook
   - >
     docker exec --tty $(cat ${container_id}) env TERM=xterm
-    ansible-playbook /etc/ansible/roles/role_to_test/tests/test.yml
+    ansible-playbook /etc/ansible/roles/htop/tests/test.yml
+  # Run the role again to make sure it's idempotent
   - idempotence=$(mktemp)
   - >
     docker exec --tty $(cat ${container_id}) env TERM=xterm
-    ansible-playbook /etc/ansible/roles/role_to_test/tests/test.yml
+    ansible-playbook /etc/ansible/roles/htop/tests/test.yml
     | tee -a ${idempotence}
   - >
     tail ${idempotence}
     | grep -q 'changed=0.*failed=0'
     && (echo 'Idempotence test: pass' && exit 0)
-    || (echo 'Idempotence test: fail && exit 1)
+    || (echo 'Idempotence test: fail' && exit 1)
+  # Ensure htop is installed
   - docker exec --tty $(cat ${container_id}) env TERM=xterm which htop
+  # Ensure the htop configuration file is installed
+  - docker exec --tty $(cat ${container_id}) env TERM=xterm test -e /etc/htoprc
