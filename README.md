@@ -1,4 +1,8 @@
-# ansible-role-htop :eyes: #
+# ansible-role-htop #
+
+[![Build Status](https://travis-ci.com/cisagov/ansible-role-htop.svg?branch=develop)](https://travis-ci.com/cisagov/ansible-role-htop)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/cisagov/ansible-role-htop.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/ansible-role-htop/alerts/)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/cisagov/ansible-role-htop.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/cisagov/ansible-role-htop/context:python)
 
 An Ansible role for installing and configuring
 [`htop`](https://hisham.hm/htop/).
@@ -21,11 +25,18 @@ None.
 
 Here's how to use it in a playbook:
 
-    - hosts: all
-      become: yes
-      become_method: sudo
-      roles:
-         - htop
+```yaml
+- hosts: all
+  become: yes
+  become_method: sudo
+  roles:
+    - htop
+```
+
+## Contributing ##
+
+We welcome contributions!  Please see [here](CONTRIBUTING.md) for
+details.
 
 ## License ##
 
