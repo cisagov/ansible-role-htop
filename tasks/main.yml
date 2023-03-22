@@ -1,6 +1,4 @@
 ---
-# tasks file for htop
-
 - name: Install htop
   package:
     name: htop
