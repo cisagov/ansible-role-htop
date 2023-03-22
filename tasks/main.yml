@@ -1,10 +1,10 @@
 ---
 - name: Install htop
-  package:
+  ansible.builtin.package:
     name: htop
 
 - name: Copy over the htop configuration file
-  copy:
+  ansible.builtin.copy:
     src: htoprc
     dest: /etc/htoprc
     mode: 0644
