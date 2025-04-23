@@ -6,5 +6,5 @@
 - name: Copy over the htop configuration file
   ansible.builtin.copy:
     dest: /etc/htoprc
-    mode: 0644
+    mode: u=rw,g=r,o=r
     src: htoprc
