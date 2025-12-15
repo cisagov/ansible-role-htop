@@ -1,6 +1,7 @@
 # ansible-role-htop #
 
 [![GitHub Build Status](https://github.com/cisagov/ansible-role-htop/workflows/build/badge.svg)](https://github.com/cisagov/ansible-role-htop/actions)
+[![License](https://img.shields.io/github/license/cisagov/ansible-role-htop)](https://spdx.org/licenses/)
 [![CodeQL](https://github.com/cisagov/ansible-role-htop/workflows/CodeQL/badge.svg)](https://github.com/cisagov/ansible-role-htop/actions/workflows/codeql-analysis.yml)
 
 An Ansible role for installing and configuring
